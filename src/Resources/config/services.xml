@@ -11,5 +11,15 @@
             <argument type="service" id="event_dispatcher"/>
         </service>
 
+        <service id="Asam\FastOrderSW6\Storefront\Controller\FastOrderController" public="true">
+            <argument type="service" id="Asam\FastOrderSW6\Storefront\Page\FastOrder\FastOrderPageLoader" />
+            <call method="setTwig">
+                <argument type="service" id="twig"/>
+            </call>
+            <call method="setContainer">
+                <argument type="service" id="service_container"/>
+            </call>
+        </service>
+
     </services>
 </container>

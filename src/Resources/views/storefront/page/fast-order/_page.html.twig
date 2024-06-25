@@ -1,0 +1,13 @@
+{% sw_extends '@Storefront/storefront/base.html.twig' %}
+
+{% block base_content %}
+    {% block fast_order %}
+        <div class="fast-order fast-order-content row">
+            {% block fast_order_main %}
+                <div class="fast-order-content-main col-md-8 offset-md-2">
+                    {% block fast_order_main_content %}{% endblock %}
+                </div>
+            {% endblock %}
+        </div>
+    {% endblock %}
+{% endblock %}
