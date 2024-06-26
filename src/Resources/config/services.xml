@@ -6,6 +6,10 @@
 
     <services>
 
+        <service id="Asam\FastOrderSW6\Core\Content\Product\SalesChannel\ProductSearch\ProductSearchRoute" public="true">
+            <argument type="service" id="sales_channel.product.repository"/>
+        </service>
+
         <service id="Asam\FastOrderSW6\Storefront\Page\FastOrder\FastOrderPageLoader" public="true">
             <argument type="service" id="Shopware\Storefront\Page\GenericPageLoader" />
             <argument type="service" id="event_dispatcher"/>
