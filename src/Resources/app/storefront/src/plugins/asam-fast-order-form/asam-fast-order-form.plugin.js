@@ -1,5 +1,6 @@
 import Plugin from 'src/plugin-system/plugin.class';
 import HttpClient from 'src/service/http-client.service';
+import LoadingIndicatorUtil from 'src/utility/loading-indicator/loading-indicator.util';
 
 export default class AsamFastOrderForm extends Plugin {
   /**
@@ -19,16 +20,17 @@ export default class AsamFastOrderForm extends Plugin {
     this._client = new HttpClient();
 
     // Get the form element.
-    this._form = this.el.querySelector(`#form-${this.options.formId}`);
+    this._form = this._getElementChildById(`form-${this.options.formId}`);
+    this._submitButton = this._getElementChildById(`fastOrderSubmitButton-${this.options.formId}`)
 
     // Get the input container.
-    this._inputContainer = this.el.querySelector(`#${this.options.formId}-input-container`);
+    this._inputContainer = this._getElementChildById(`${this.options.formId}-input-container`)
 
     // Get the add block button.
-    this._addBlockButton = this.el.querySelector(`#fastOrderAddBlockButton-${this.options.formId}`);
+    this._addBlockButton = this._getElementChildById(`fastOrderAddBlockButton-${this.options.formId}`);
 
     // Get the alert box.
-    this._alertBox = this.el.querySelector(`#fastOrderAlertBox-${this.options.formId}`);
+    this._alertBox = this._getElementChildById(`fastOrderAlertBox-${this.options.formId}`);
 
     // Let's ensure that the required elements to enable the plugin work correctly are present.
     if (!this._validateRequiredElements()) {
@@ -37,7 +39,9 @@ export default class AsamFastOrderForm extends Plugin {
 
     // Call the _handleInputBlock function as many times as the minInputBlocks option
     for (let i = 0; i < this.options.minInputBlocks; i++) {
-      this._client.get(this.options.urls.inputTemplate, this._setInputBlock.bind(this))
+      this._client.get(this.options.urls.inputTemplate, async (response) => {
+        await this._setInputBlock(response);
+      })
     }
 
     this._registerEvents();
@@ -56,12 +60,18 @@ export default class AsamFastOrderForm extends Plugin {
   _handleSubmit(event) {
     event.preventDefault();
 
+    // Get load indicator for the submit button.
+    const loadIndicator = this.getLoadingIndicator(this._submitButton);
+
     const formData = new FormData(this._form);
-    this._client.post(this._form.getAttribute('action'), formData, this._onFormSubmitted.bind(this));
+    this._client.post(this._form.getAttribute('action'), formData, (response) => {
+      this._onFormSubmitted(response, loadIndicator);
+    });
   }
 
-  _onFormSubmitted(response) {
-    console.log(response);
+  _onFormSubmitted(response, loadIndicator) {
+    loadIndicator.remove();
+
     /** @type {{ success: boolean, redirectTo: string, errors: array }} */
     let data = JSON.parse(response);
 
@@ -77,9 +87,14 @@ export default class AsamFastOrderForm extends Plugin {
    * Handle input block insertion into the DOM.
    *
    * @param response
+   * @param loadingIndicator
    * @private
    */
-  _setInputBlock(response) {
+  _setInputBlock(response, loadingIndicator = null) {
+    if (loadingIndicator) {
+      loadingIndicator.remove();
+    }
+
     // Add the response to the end of the element
     this._inputContainer.insertAdjacentHTML('beforeend', response);
 
@@ -99,7 +114,11 @@ export default class AsamFastOrderForm extends Plugin {
    * @private
    */
   _handleAddBlock() {
-    this._client.get(this.options.urls.inputTemplate, this._setInputBlock.bind(this));
+    const loadingIndicator = this.getLoadingIndicator(this._addBlockButton)
+
+    this._client.get(this.options.urls.inputTemplate, (response) => {
+      this._setInputBlock(response, loadingIndicator);
+    });
   }
 
   /**
@@ -137,5 +156,22 @@ export default class AsamFastOrderForm extends Plugin {
     }
 
     return isValid;
+  }
+
+  /**
+   * Get the loading indicator for the given element.
+   *
+   * @param element
+   * @returns {*}
+   */
+  getLoadingIndicator(element) {
+    let loadIndicator = new LoadingIndicatorUtil(element);
+    loadIndicator.create();
+
+    return loadIndicator;
+  }
+
+  _getElementChildById(id) {
+    return this.el.querySelector(`#${id}`);
   }
 }
