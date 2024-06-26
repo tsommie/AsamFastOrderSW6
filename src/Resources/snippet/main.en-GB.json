@@ -1,0 +1,26 @@
+{
+    "asam": {
+        "fastOrder": {
+            "fields": {
+                "productNumber": {
+                    "label": "Product number",
+                    "placeholder": "Type to search product by number...",
+                    "errorMessage": "Product not found. Please enter a valid product number."
+                },
+                "quantity": {
+                    "label": "Quantity",
+                    "placeholder": "Enter quantity",
+                    "errorMessage": "Please enter a valid quantity."
+                }
+            },
+            "buttons": {
+                "addToCart": "Add to cart",
+                "addItem": "Add another product",
+                "remove": "Remove"
+            },
+            "navigation": {
+                "label": "Fast Order"
+            }
+        }
+    }
+}
