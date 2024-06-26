@@ -20,6 +20,9 @@
             },
             "navigation": {
                 "label": "Fast Order"
+            },
+            "errors": {
+                "invalidFormData": "Invalid form data submitted. Please be sure to enter a valid product number and quantity."
             }
         }
     }

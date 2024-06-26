@@ -191,7 +191,7 @@ class FastOrderController extends StorefrontController
         } catch (\Throwable $e) {
             return $this->json([
                 'success'       => false,
-                'errors'        => ['Invalid for data submitted. Please be sure to enter a valid product number and quantity.'],
+                'errors'        => [$this->trans('asam.fastOrder.errors.invalidFormData')],
                 'redirectTo'    => null,
             ]);
         }
