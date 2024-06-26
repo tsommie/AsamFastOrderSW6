@@ -7,9 +7,9 @@
         <a class="nav-link main-navigation-link fast-order-link ms-auto"
            href="{{ path('frontend.asam.fast-order.form') }}"
            itemprop="url"
-           title="{# @todo: Add title via snippet #}">
+           title="{{ 'asam.fastOrder.navigation.label'|trans }}">
             <div class="main-navigation-link-text">
-                <span itemprop="name">Fast Order</span>
+                <span itemprop="name">{{ 'asam.fastOrder.navigation.label'|trans }}</span>
             </div>
         </a>
     {% endblock %}
