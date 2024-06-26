@@ -17,6 +17,10 @@
 
         <service id="Asam\FastOrderSW6\Storefront\Controller\FastOrderController" public="true">
             <argument type="service" id="Asam\FastOrderSW6\Storefront\Page\FastOrder\FastOrderPageLoader" />
+            <argument type="service" id="Asam\FastOrderSW6\Core\Content\Product\SalesChannel\ProductSearch\ProductSearchRoute" />
+            <argument type="service" id="Shopware\Core\Checkout\Cart\SalesChannel\CartService"/>
+            <argument type="service" id="Shopware\Core\Checkout\Cart\LineItemFactoryRegistry"/>
+            <argument type="service" id="Shopware\Core\System\SystemConfig\SystemConfigService"/>
             <call method="setTwig">
                 <argument type="service" id="twig"/>
             </call>
