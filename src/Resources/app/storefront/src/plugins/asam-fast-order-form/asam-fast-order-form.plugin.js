@@ -37,13 +37,6 @@ export default class AsamFastOrderForm extends Plugin {
       return;
     }
 
-    // Call the _handleInputBlock function as many times as the minInputBlocks option
-    for (let i = 0; i < this.options.minInputBlocks; i++) {
-      this._client.get(this.options.urls.inputTemplate, async (response) => {
-        await this._setInputBlock(response);
-      })
-    }
-
     this._registerEvents();
   }
 

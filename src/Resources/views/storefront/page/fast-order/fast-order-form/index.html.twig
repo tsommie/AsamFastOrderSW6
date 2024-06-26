@@ -37,7 +37,11 @@
                                     </thead>
                                 {% endblock %}
                                 {% block asam_fast_order_main_content_table_body %}
-                                    <tbody id="{{ formId }}-input-container"></tbody>
+                                    <tbody id="{{ formId }}-input-container">
+                                        {% for i in range(1, minInputBlock) %}
+                                            {% sw_include '@Storefront/storefront/page/fast-order/fast-order-form/fast-order-form-input.html.twig' %}
+                                        {% endfor %}
+                                    </tbody>
                                 {% endblock %}
                             </table>
                         </div>
