@@ -1,0 +1,61 @@
+{% if hashId is not defined %}
+    {% set randomString = random() ~ random() ~ "now" | date("U") %}
+    {% set hashId = randomString | md5 %}
+{% endif %}
+
+{% set minInputBeforeSearch = config('AsamFastOrderSW6.config.minInputBeforeSearch') %}
+{% set searchDelay = config('AsamFastOrderSW6.config.searchDelay') %}
+
+{% set fastOrderFormInput = {
+    hashId: hashId,
+    minInputBeforeSearch: minInputBeforeSearch ? minInputBeforeSearch : 3,
+    searchDelay: searchDelay ? searchDelay : 300,
+    urls: {
+        search: path('frontend.asam.fast-order.search'),
+    }
+} %}
+
+{% block asam_fast_order_form_item_block %}
+    <tr data-asam-fast-order-form-input
+        data-asam-fast-order-form-input-options="{{ fastOrderFormInput|json_encode }}">
+
+        <td>
+            <input type="hidden" name="items[{{ hashId }}][id]" value="" required>
+            <input type="hidden" name="items[{{ hashId }}][referenceId]" value="">
+
+            {% block asam_fast_order_form_item_block_input_product_number %}
+                {% set productNumberErrorKey = '/items[' ~ hashId ~ '][number]' %}
+
+                <input class="form-control"
+                       list="fastOrderProductOptions-{{ hashId }}"
+                       id="fastOrderProductNumber-{{ hashId }}"
+                       name="items[{{ hashId }}][number]"
+                       required
+                       placeholder="{{ 'asam.fastOrder.fields.productNumber.placeholder'|trans }}">
+                <datalist id="fastOrderProductOptions-{{ hashId }}"></datalist>
+
+                <div class="invalid-feedback d-none">
+                    {{ 'asam.fastOrder.fields.productNumber.errorMessage'|trans }}
+                </div>
+            {% endblock %}
+        </td>
+        <td>
+            {% block asam_fast_order_form_item_block_input_quantity %}
+                {% set quantityErrorKey = '/items[' ~ hashId ~ '][quantity]' %}
+
+                <input type="number"
+                       class="form-control"
+                       id="fastOrderQuantity-{{ hashId }}"
+                       name="items[{{ hashId }}][quantity]"
+                       min="1"
+                       max="999" {# @todo: Check max purchace #}
+                       placeholder="{{ 'asam.fastOrder.fields.quantity.placeholder'|trans }}"
+                       required>
+
+                <div class="invalid-feedback d-none text-sm">
+                    {{ 'asam.fastOrder.fields.quantity.errorMessage'|trans }}
+                </div>
+            {% endblock %}
+        </td>
+    </tr>
+{% endblock %}
