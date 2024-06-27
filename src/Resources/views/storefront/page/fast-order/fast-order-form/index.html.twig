@@ -2,11 +2,13 @@
 
 {% block asam_fast_order_main_content %}
     {% set minInputBlock = config('AsamFastOrderSW6.config.minInputBlock') %}
+    {% set minInputBlock = minInputBlock is not empty and minInputBlock is not same as(0) ? minInputBlock : 4 %}
+
     {% set formId = 'fastOrder' %}
 
     {% set fastOrderFormConfig = {
         formId: formId,
-        minInputBlocks: minInputBlock is not empty ? minInputBlock : 4,
+        minInputBlocks: minInputBlock,
         urls: {
             inputTemplate: path('frontend.asam.fast-order.input-template')
         }

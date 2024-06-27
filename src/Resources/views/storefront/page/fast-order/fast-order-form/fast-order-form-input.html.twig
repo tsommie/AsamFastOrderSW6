@@ -4,12 +4,14 @@
 {% endif %}
 
 {% set minInputBeforeSearch = config('AsamFastOrderSW6.config.minInputBeforeSearch') %}
+{% set minInputBeforeSearch = minInputBeforeSearch is not empty and minInputBeforeSearch is not same as(0) ? minInputBeforeSearch : 2 %}
 {% set searchDelay = config('AsamFastOrderSW6.config.searchDelay') %}
+{% set searchDelay = searchDelay is not empty and searchDelay is not same as(0) ? searchDelay : 300 %}
 
 {% set fastOrderFormInput = {
     hashId: hashId,
-    minInputBeforeSearch: minInputBeforeSearch ? minInputBeforeSearch : 3,
-    searchDelay: searchDelay ? searchDelay : 300,
+    minInputBeforeSearch: minInputBeforeSearch,
+    searchDelay: searchDelay,
     urls: {
         search: path('frontend.asam.fast-order.search'),
     }
@@ -24,8 +26,6 @@
             <input type="hidden" name="items[{{ hashId }}][referenceId]" value="">
 
             {% block asam_fast_order_form_item_block_input_product_number %}
-                {% set productNumberErrorKey = '/items[' ~ hashId ~ '][number]' %}
-
                 <input class="form-control"
                        list="fastOrderProductOptions-{{ hashId }}"
                        id="fastOrderProductNumber-{{ hashId }}"
@@ -41,8 +41,6 @@
         </td>
         <td>
             {% block asam_fast_order_form_item_block_input_quantity %}
-                {% set quantityErrorKey = '/items[' ~ hashId ~ '][quantity]' %}
-
                 <input type="number"
                        class="form-control"
                        id="fastOrderQuantity-{{ hashId }}"
