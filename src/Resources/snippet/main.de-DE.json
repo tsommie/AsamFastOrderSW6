@@ -22,7 +22,8 @@
                 "label": "Schnelle Bestellung"
             },
             "errors": {
-                "invalidFormData": "Ungültige Formulardaten übermittelt. Bitte stellen Sie sicher, dass Sie eine gültige Produktnummer und Menge eingeben."
+                "invalidFormData": "Ungültige Formulardaten übermittelt. Bitte stellen Sie sicher, dass Sie eine gültige Produktnummer und Menge eingeben.",
+                "invalidProductNumber": "Ungültige Produktnummer \"%number%\" angegeben. Bitte geben Sie eine gültige Produktnummer ein."
             }
         }
     }

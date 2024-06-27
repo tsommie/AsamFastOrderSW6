@@ -3,6 +3,7 @@
 namespace Asam\FastOrderSW6\Storefront\Controller;
 
 use Asam\FastOrderSW6\Core\Content\Product\SalesChannel\ProductSearch\ProductSearchRoute;
+use Asam\FastOrderSW6\Exception\InvalidProductIdException;
 use Asam\FastOrderSW6\Storefront\Page\FastOrder\FastOrderPageLoader;
 use Shopware\Core\Checkout\Cart\Cart;
 use Shopware\Core\Checkout\Cart\CartException;
@@ -122,7 +123,7 @@ class FastOrderController extends StorefrontController
      * @param RequestDataBag $requestDataBag
      * @param Request $request
      * @param SalesChannelContext $context
-     * @return Response
+     * @return JsonResponse
      */
     #[Route(
         path: '/fast-order',
@@ -151,6 +152,13 @@ class FastOrderController extends StorefrontController
             /** @var RequestDataBag $itemData */
             foreach ($items as $itemData) {
                 try {
+                    if (empty($itemData->get('id'))) {
+                        /* @todo: Handle validations in a dedicated validation factory. */
+                        throw new InvalidProductIdException(
+                            $this->trans('asam.fastOrder.errors.invalidProductNumber', ['%number%' => $itemData->get('number')])
+                        );
+                    }
+
                     $item = $this->lineItemFactoryRegistry->create(
                         $this->getLineItemArray($itemData),
                         $context
@@ -182,25 +190,33 @@ class FastOrderController extends StorefrontController
             if (!$this->traceErrors($cart)) {
                 $this->addFlash(self::SUCCESS, $this->trans('checkout.addToCartSuccess', ['%count%' => $count]));
             }
+
+            $response = [
+                'success'       => true,
+                'redirectTo'    => $this->generateUrl('frontend.checkout.cart.page'),
+                'error'         => [],
+            ];
         } catch (ProductNotFoundException|RoutingException) {
-            return $this->json([
+            $response = [
                 'success'       => false,
                 'errors'        => $cart->getErrors()->getElements(),
                 'redirectTo'    => null,
-            ]);
+            ];
+        } catch (InvalidProductIdException $e) {
+            $response = [
+                'success'       => false,
+                'errors'        => [$e->getMessage()],
+                'redirectTo'    => null,
+            ];
         } catch (\Throwable $e) {
-            return $this->json([
+            $response = [
                 'success'       => false,
                 'errors'        => [$this->trans('asam.fastOrder.errors.invalidFormData')],
                 'redirectTo'    => null,
-            ]);
+            ];
         }
 
-        return $this->json([
-            'success'       => true,
-            'redirectTo'    => $this->generateUrl('frontend.checkout.cart.page'),
-            'error'         => [],
-        ]);
+        return $this->json($response);
     }
 
     /**

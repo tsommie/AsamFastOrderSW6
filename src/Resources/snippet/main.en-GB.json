@@ -22,7 +22,8 @@
                 "label": "Fast Order"
             },
             "errors": {
-                "invalidFormData": "Invalid form data submitted. Please be sure to enter a valid product number and quantity."
+                "invalidFormData": "Invalid form data submitted. Please be sure to enter a valid product number and quantity.",
+                "invalidProductNumber": "Invalid product number \"%number%\" provided. Please enter a valid product number."
             }
         }
     }
