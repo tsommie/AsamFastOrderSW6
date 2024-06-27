@@ -4,15 +4,15 @@
         xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/shopware/shopware/trunk/src/Core/System/SystemConfig/Schema/config.xsd">
 
     <card>
-        <title>General configuration</title>
-        <title>Generelle Konfiguration</title>
+        <title>General Settings</title>
+        <title lang="de-DE">Allgemeine Einstellungen</title>
 
         <input-field type="int">
             <name>minInputBlock</name>
             <label>Minimum item block display</label>
             <label lang="de-DE">Mindestanzeige des Artikelblocks</label>
-            <help-text>Minimum number of item blocks to be displayed on page load.</help-text>
-            <help-text lang="de-DE">Mindestanzahl der Elementblöcke, die beim Laden der Seite angezeigt werden sollen.</help-text>
+            <helpText>Minimum number of item blocks to be displayed on page load.</helpText>
+            <helpText lang="de-DE">Mindestanzahl der Elementblöcke, die beim Laden der Seite angezeigt werden sollen.</helpText>
             <defaultValue>4</defaultValue>
         </input-field>
 
@@ -20,8 +20,8 @@
             <name>minInputBeforeSearch</name>
             <label>Minimum characters before search</label>
             <label lang="de-DE">Mindestanzahl von Zeichen vor der Suche</label>
-            <help-text>Specify the minimum number of characters that must be entered in the product number input field before an AJAX call is made to fetch matching products.</help-text>
-            <help-text lang="de-DE">Geben Sie die Mindestanzahl von Zeichen an, die in das Eingabefeld für die Produktnummer eingegeben werden müssen, bevor ein AJAX-Aufruf erfolgt, um passende Produkte zu finden.</help-text>
+            <helpText>Specify the minimum number of characters that must be entered in the product number input field before an AJAX call is made to fetch matching products.</helpText>
+            <helpText lang="de-DE">Geben Sie die Mindestanzahl von Zeichen an, die in das Eingabefeld für die Produktnummer eingegeben werden müssen, bevor ein AJAX-Aufruf erfolgt, um passende Produkte zu finden.</helpText>
             <defaultValue>2</defaultValue>
         </input-field>
 
@@ -29,8 +29,8 @@
             <name>searchDelay</name>
             <label>Key press delay (Milliseconds)</label>
             <label lang="de-DE">Verzögerung beim Tastendruck (Millisekunden)</label>
-            <help-text>Specify the debounce time for user input in the product number input field.</help-text>
-            <help-text lang="de-DE">Geben Sie die Entprellungszeit für die Benutzereingabe im Eingabefeld für die Produktnummer an.</help-text>
+            <helpText>Specify the debounce time for user input in the product number input field.</helpText>
+            <helpText lang="de-DE">Geben Sie die Entprellungszeit für die Benutzereingabe im Eingabefeld für die Produktnummer an.</helpText>
             <defaultValue>300</defaultValue>
         </input-field>
 
@@ -38,8 +38,8 @@
             <name>suggestionLimit</name>
             <label>Max number options in suggestion dropdown</label>
             <label lang="de-DE">Maximale Anzahl von Optionen im Dropdown-Menü für Vorschläge</label>
-            <help-text>Specify the maximum number of results to be returned in the suggestion dropdown.</help-text>
-            <help-text lang="de-DE">Geben Sie die maximale Anzahl der Ergebnisse an, die in der Dropdown-Liste der Vorschläge angezeigt werden sollen.</help-text>
+            <helpText>Specify the maximum number of results to be returned in the suggestion dropdown.</helpText>
+            <helpText lang="de-DE">Geben Sie die maximale Anzahl der Ergebnisse an, die in der Dropdown-Liste der Vorschläge angezeigt werden sollen.</helpText>
             <defaultValue>5</defaultValue>
         </input-field>
     </card>
