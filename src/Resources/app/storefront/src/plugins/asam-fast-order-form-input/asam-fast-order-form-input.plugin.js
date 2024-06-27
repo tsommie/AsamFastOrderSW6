@@ -43,7 +43,7 @@ export default class AsamFastOrderFormInput extends Plugin {
   }
 
   _handleProductNumberInput(event) {
-    const productNumber = event.target.value;
+    const productNumber = event.target.value.trim();
 
     if (productNumber.length < this.options.minInputBeforeSearch) {
       return;
@@ -76,6 +76,10 @@ export default class AsamFastOrderFormInput extends Plugin {
   _handleValidationResponse(response) {
     /** @var {{valid: boolean, productId: string, message: string }} data */
     let data = JSON.parse(response);
+
+    // Unset the product id and reference id.
+    this._setInputValue('id', '');
+    this._setInputValue('referenceId', '');
 
     // Get .invalid-feedback element next to the input field
     let invalidFeedback = this._productNumberInput.nextElementSibling;
