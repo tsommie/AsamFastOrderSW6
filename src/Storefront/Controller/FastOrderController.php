@@ -193,17 +193,16 @@ class FastOrderController extends StorefrontController
                     $lineItems[] = $item;
                 } catch (CartException $e) {
                     if ($e->getErrorCode() === CartException::CART_INVALID_LINE_ITEM_QUANTITY_CODE) {
-                        $this->addFlash(
-                            self::DANGER,
-                            $this->trans(
+                        return $this->json([
+                            'success' => false,
+                            'errors' => [$this->trans(
                                 'error.CHECKOUT__CART_INVALID_LINE_ITEM_QUANTITY',
                                 [
                                     '%quantity%' => $e->getParameter('quantity'),
                                 ]
-                            )
-                        );
-
-                        return $this->createActionResponse($request);
+                            )],
+                            'redirectTo' => null,
+                        ]);
                     }
 
                     throw $e;
