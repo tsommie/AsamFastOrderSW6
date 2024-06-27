@@ -77,18 +77,11 @@ export default class AsamFastOrderFormInput extends Plugin {
     /** @var {{valid: boolean, productId: string, message: string }} data */
     let data = JSON.parse(response);
 
-    // Unset the product id and reference id.
-    this._setInputValue('id', '');
-    this._setInputValue('referenceId', '');
-
     // Get .invalid-feedback element next to the input field
     let invalidFeedback = this._productNumberInput.nextElementSibling;
 
     // If the response is valid, set the product id and reference id
     if (data.valid) {
-      this._setInputValue('id', data.productId);
-      this._setInputValue('referenceId', data.productId);
-
       this._productNumberInput.classList.add('is-valid');
       this._productNumberInput.classList.remove('is-invalid');
 

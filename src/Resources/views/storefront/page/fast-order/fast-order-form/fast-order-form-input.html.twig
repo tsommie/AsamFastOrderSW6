@@ -22,9 +22,6 @@
         data-asam-fast-order-form-input-options="{{ fastOrderFormInput|json_encode }}">
 
         <td>
-            <input type="hidden" name="items[{{ hashId }}][id]" value="" required>
-            <input type="hidden" name="items[{{ hashId }}][referenceId]" value="">
-
             {% block asam_fast_order_form_item_block_input_product_number %}
                 <input class="form-control"
                        list="fastOrderProductOptions-{{ hashId }}"

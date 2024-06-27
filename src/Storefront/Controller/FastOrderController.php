@@ -152,13 +152,19 @@ class FastOrderController extends StorefrontController
             /** @var RequestDataBag $itemData */
             foreach ($items as $itemData) {
                 try {
-                    if (empty($itemData->get('id'))) {
+                    $product = $this->productSearchRoute->load(
+                        $this->getCriteria($itemData->get('number'), true, $context),
+                        $context
+                    )->getProducts()->first();
+
+                    if (!$product) {
                         /* @todo: Handle validations in a dedicated validation factory. */
                         throw new InvalidProductIdException(
                             $this->trans('asam.fastOrder.errors.invalidProductNumber', ['%number%' => $itemData->get('number')])
                         );
                     }
 
+                    $itemData->set('id', $product->getId());
                     $item = $this->lineItemFactoryRegistry->create(
                         $this->getLineItemArray($itemData),
                         $context
