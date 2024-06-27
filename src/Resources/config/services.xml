@@ -7,7 +7,7 @@
     <services>
 
         <service id="Asam\FastOrderSW6\Core\Content\Product\SalesChannel\ProductSearch\ProductSearchRoute" public="true">
-            <argument type="service" id="sales_channel.product.repository"/>
+            <argument type="service" id="product.repository"/>
         </service>
 
         <service id="Asam\FastOrderSW6\Storefront\Page\FastOrder\FastOrderPageLoader" public="true">
