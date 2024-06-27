@@ -74,8 +74,20 @@ export default class AsamFastOrderFormInput extends Plugin {
   }
 
   _handleValidationResponse(response) {
-    /** @var {{valid: boolean, productId: string, message: string }} data */
+    /**
+     * @var {{ valid: boolean, productId: string, message: string, product: {
+     *   id: string,
+     *   productNumber: string,
+     *   minPurchase: string,
+     *   maxPurchase: string,
+     *   purchaseSteps: string,
+     *   stock: string
+     * } }} data
+     * */
     let data = JSON.parse(response);
+
+    //  Unset number attributes...
+    this._unsetNumberInputAttributes();
 
     // Get .invalid-feedback element next to the input field
     let invalidFeedback = this._productNumberInput.nextElementSibling;
@@ -84,6 +96,9 @@ export default class AsamFastOrderFormInput extends Plugin {
     if (data.valid) {
       this._productNumberInput.classList.add('is-valid');
       this._productNumberInput.classList.remove('is-invalid');
+
+      // Set number input field attributes.
+      this._setNumberInputAttributes(data.product);
 
       if (invalidFeedback && invalidFeedback.classList.contains('invalid-feedback')) {
         // Add the d-none class to hide the error message if it was shown
@@ -101,14 +116,46 @@ export default class AsamFastOrderFormInput extends Plugin {
   }
 
   /**
-   * Set a value to an input identified by the key provided.
+   * Set number constraint attributes to better aid the customer make better decision.
    *
-   * @param key
-   * @param value
+   * @param {{
+   *   id: string,
+   *   productNumber: string,
+   *   minPurchase: string,
+   *   maxPurchase: string,
+   *   purchaseSteps: string,
+   *   stock: string
+   * }} product
    * @private
    */
-  _setInputValue(key, value) {
-    this.el.querySelector(`input[name="items[${this.options.hashId}][${key}]"]`).value = value;
+  _setNumberInputAttributes(product) {
+    const input = this.el.querySelector(`#fastOrderQuantity-${this.options.hashId}`);
+
+    if (!input) {
+      return;
+    }
+
+    input.value = product.minPurchase;
+    input.setAttribute('min', product.minPurchase);
+    input.setAttribute('max', product.maxPurchase);
+    input.setAttribute('step', product.purchaseSteps);
+  }
+
+  /**
+   * Unset the number input attributes.
+   *
+   * @private
+   */
+  _unsetNumberInputAttributes() {
+    const input = this.el.querySelector(`#fastOrderQuantity-${this.options.hashId}`);
+
+    if (!input) {
+      return;
+    }
+
+    input.removeAttribute('min');
+    input.removeAttribute('max');
+    input.removeAttribute('step');
   }
 
   /**

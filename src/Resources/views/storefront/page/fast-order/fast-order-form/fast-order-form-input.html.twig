@@ -43,8 +43,7 @@
                        class="form-control"
                        id="fastOrderQuantity-{{ hashId }}"
                        name="items[{{ hashId }}][quantity]"
-                       min="1"
-                       max="999" {# @todo: Check max purchace #}
+                       autocomplete="off"
                        placeholder="{{ 'asam.fastOrder.fields.quantity.placeholder'|trans }}"
                        required>
 

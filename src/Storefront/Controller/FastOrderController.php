@@ -99,22 +99,41 @@ class FastOrderController extends StorefrontController
 
         $criteria = $this->getCriteria($number, $validationMode, $context);
 
-        $options = $this->productSearchRoute->load($criteria, $context)->getProducts();
+        $products = $this->productSearchRoute->load($criteria, $context)->getProducts();
 
         // If validation mode is enabled, we only need to check if the product exists and then return a json response.
         if ($validationMode) {
-            $response = [
-                'valid'     => $validity = $options->count() > 0,
-                'productId' => $validity ? $options->first()->getId() : null,
-                'message'   => $validity ? null : 'Product not found. Please enter a valid product number.'
-            ];
+            if ($products->count() > 0) {
+                $product = $products->first();
+
+                $response = [
+                    'valid'     => true,
+                    'productId' => $products->first()->getId(),
+                    'message'   => null,
+                    'product'   => [
+                        'id'            => $product->getId(),
+                        'productNumber' => $product->getProductNumber(),
+                        'minPurchase'   => $product->getMinPurchase(),
+                        'maxPurchase'   => $product->getMinPurchase(),
+                        'purchaseSteps' => $product->getPurchaseSteps(),
+                        'stock'         => $product->getAvailableStock(),
+                    ]
+                ];
+            } else {
+                $response = [
+                    'valid'     => false,
+                    'productId' => null,
+                    'message'   => 'Product not found. Please enter a valid product number.',
+                    'product'   => null
+                ];
+            }
 
             return $this->json($response);
         }
 
         return $this->renderStorefront(
             '@Storefront/storefront/page/fast-order/fast-order-form/fast-order-form-input-select-option.html.twig',
-            compact('options')
+            compact('products')
         );
     }
 
