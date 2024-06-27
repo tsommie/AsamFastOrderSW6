@@ -15,7 +15,7 @@
             },
             "buttons": {
                 "addToCart": "Add to cart",
-                "addItem": "Add another product",
+                "addItem": "Add Product",
                 "remove": "Remove"
             },
             "navigation": {
