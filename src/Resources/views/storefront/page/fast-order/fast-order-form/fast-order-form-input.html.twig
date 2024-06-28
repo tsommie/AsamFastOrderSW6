@@ -1,0 +1,56 @@
+{% if hashId is not defined %}
+    {% set randomString = random() ~ random() ~ "now" | date("U") %}
+    {% set hashId = randomString | md5 %}
+{% endif %}
+
+{% set minInputBeforeSearch = config('AsamFastOrderSW6.config.minInputBeforeSearch') %}
+{% set minInputBeforeSearch = minInputBeforeSearch is not empty and minInputBeforeSearch is not same as(0) ? minInputBeforeSearch : 2 %}
+{% set searchDelay = config('AsamFastOrderSW6.config.searchDelay') %}
+{% set searchDelay = searchDelay is not empty and searchDelay is not same as(0) ? searchDelay : 300 %}
+
+{% set fastOrderFormInput = {
+    hashId: hashId,
+    minInputBeforeSearch: minInputBeforeSearch,
+    searchDelay: searchDelay,
+    urls: {
+        search: path('frontend.asam.fast-order.search'),
+    }
+} %}
+
+{% block asam_fast_order_form_item_block %}
+    <tr data-asam-fast-order-form-input
+        data-asam-fast-order-form-input-options="{{ fastOrderFormInput|json_encode }}">
+
+        <td>
+            {% block asam_fast_order_form_item_block_input_product_number %}
+                <input class="form-control"
+                       list="fastOrderProductOptions-{{ hashId }}"
+                       id="fastOrderProductNumber-{{ hashId }}"
+                       name="items[{{ hashId }}][number]"
+                       required
+                       autocomplete="off"
+                       placeholder="{{ 'asam.fastOrder.fields.productNumber.placeholder'|trans }}">
+                <datalist id="fastOrderProductOptions-{{ hashId }}"></datalist>
+
+                <div class="invalid-feedback d-none">
+                    {{ 'asam.fastOrder.fields.productNumber.errorMessage'|trans }}
+                </div>
+            {% endblock %}
+        </td>
+        <td>
+            {% block asam_fast_order_form_item_block_input_quantity %}
+                <input type="number"
+                       class="form-control"
+                       id="fastOrderQuantity-{{ hashId }}"
+                       name="items[{{ hashId }}][quantity]"
+                       autocomplete="off"
+                       placeholder="{{ 'asam.fastOrder.fields.quantity.placeholder'|trans }}"
+                       required>
+
+                <div class="invalid-feedback d-none text-sm">
+                    {{ 'asam.fastOrder.fields.quantity.errorMessage'|trans }}
+                </div>
+            {% endblock %}
+        </td>
+    </tr>
+{% endblock %}

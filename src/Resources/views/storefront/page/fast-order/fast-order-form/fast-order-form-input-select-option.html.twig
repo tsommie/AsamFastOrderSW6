@@ -1,0 +1,7 @@
+{% block fast_order_form_select_options %}
+    {% for product in products %}
+        <option class="fast-order-form-input-select-options"
+                value="{{ product.productNumber }}"
+                data-product-id="{{ product.id }}">{{ product.productNumber }}</option>
+    {% endfor %}
+{% endblock %}

@@ -1,0 +1,27 @@
+{
+    "name": "asam/fast-order-sw6",
+    "description": "Fast Order Plugin for Shopware 6",
+    "type": "shopware-platform-plugin",
+    "version": "1.0.0",
+    "license": "proprietary",
+    "require": {
+        "shopware/core": "~6.6.0"
+    },
+    "extra": {
+        "shopware-plugin-class": "Asam\\FastOrderSW6\\AsamFastOrderSW6",
+        "label": {
+            "de-DE": "Shopware Schnelle Bestellung",
+            "en-GB": "Shopware Fast Order"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Asam\\FastOrderSW6\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Asam\\FastOrderSW6\\Tests\\": "tests/"
+        }
+    }
+}

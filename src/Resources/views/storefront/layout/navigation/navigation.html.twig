@@ -1,0 +1,16 @@
+{% sw_extends '@Storefront/storefront/layout/navigation/navigation.html.twig' %}
+
+{% block layout_main_navigation_menu_items %}
+    {{ parent() }}
+
+    {% block layout_main_navigation_menu_items_fast_order %}
+        <a class="nav-link main-navigation-link fast-order-link ms-auto"
+           href="{{ path('frontend.asam.fast-order.form') }}"
+           itemprop="url"
+           title="{{ 'asam.fastOrder.navigation.label'|trans }}">
+            <div class="main-navigation-link-text">
+                <span itemprop="name">{{ 'asam.fastOrder.navigation.label'|trans }}</span>
+            </div>
+        </a>
+    {% endblock %}
+{% endblock %}

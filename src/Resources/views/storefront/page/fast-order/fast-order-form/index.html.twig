@@ -1,0 +1,70 @@
+{% sw_extends '@Storefront/storefront/page/fast-order/_page.html.twig' %}
+
+{% block asam_fast_order_main_content %}
+    {% set minInputBlock = config('AsamFastOrderSW6.config.minInputBlock') %}
+    {% set minInputBlock = minInputBlock is not empty and minInputBlock is not same as(0) ? minInputBlock : 4 %}
+
+    {% set formId = 'fastOrder' %}
+
+    {% set fastOrderFormConfig = {
+        formId: formId,
+        minInputBlocks: minInputBlock,
+        urls: {
+            inputTemplate: path('frontend.asam.fast-order.input-template')
+        }
+    } %}
+
+    <div class="card"
+            data-asam-fast-order-form
+            data-asam-fast-order-form-options="{{ fastOrderFormConfig|json_encode }}">
+        <div class="card-body">
+            <div id="fastOrderAlertBox-{{ formId }}" class="alert alert-danger p-3 d-none" role="alert"></div>
+
+            {% block asam_fast_order_main_content_form %}
+                <form id="form-{{ formId }}"
+                      action="{{ path('frontend.asam.fast-order.submit') }}"
+                      method="post">
+
+                    <input type="hidden" name="redirectTo" value="frontend.checkout.cart.page">
+
+                    {% block asam_fast_order_main_content_table %}
+                        <div class="table-responsive">
+                            <table class="table table-hover table-borderless">
+                                {% block asam_fast_order_main_content_table_header %}
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th scope="col" width="80%">{{ 'asam.fastOrder.fields.productNumber.label'|trans }}</th>
+                                            <th scope="col" width="20%">{{ 'asam.fastOrder.fields.quantity.label'|trans }}</th>
+                                        </tr>
+                                    </thead>
+                                {% endblock %}
+                                {% block asam_fast_order_main_content_table_body %}
+                                    <tbody id="{{ formId }}-input-container">
+                                        {% for i in range(1, minInputBlock) %}
+                                            {% sw_include '@Storefront/storefront/page/fast-order/fast-order-form/fast-order-form-input.html.twig' %}
+                                        {% endfor %}
+                                    </tbody>
+                                {% endblock %}
+                            </table>
+                        </div>
+                    {% endblock %}
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        {% block asam_fast_order_main_content_table_button_add_item %}
+                            <button id="fastOrderAddBlockButton-{{ formId }}" type="button" class="btn btn-secondary btn-lg btn-block">
+                                {% sw_icon 'plus' style {size: 'xs'} %}
+                                {{ 'asam.fastOrder.buttons.addItem'|trans }}
+                            </button>
+                        {% endblock %}
+
+                        {% block asam_fast_order_main_content_table_button_add_to_cart %}
+                            <button id="fastOrderSubmitButton-{{ formId }}" type="submit" class="btn btn-primary btn-lg">
+                                {{ 'asam.fastOrder.buttons.addToCart'|trans }}
+                            </button>
+                        {% endblock %}
+                    </div>
+                </form>
+            {% endblock %}
+        </div>
+    </div>
+{% endblock %}
