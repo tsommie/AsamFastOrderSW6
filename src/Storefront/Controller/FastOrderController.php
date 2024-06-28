@@ -12,6 +12,7 @@ use Shopware\Core\Checkout\Cart\LineItem\LineItem;
 use Shopware\Core\Checkout\Cart\LineItemFactoryRegistry;
 use Shopware\Core\Checkout\Cart\SalesChannel\CartService;
 use Shopware\Core\Content\Product\Exception\ProductNotFoundException;
+use Shopware\Core\Content\Product\ProductEntity;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\ContainsFilter;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
@@ -170,17 +171,7 @@ class FastOrderController extends StorefrontController
             /** @var RequestDataBag $itemData */
             foreach ($items as $itemData) {
                 try {
-                    $product = $this->productSearchRoute->load(
-                        $this->getCriteria($itemData->get('number'), true, $context),
-                        $context
-                    )->getProducts()->first();
-
-                    if (!$product) {
-                        /* @todo: Handle validations in a dedicated validation factory. */
-                        throw new InvalidProductIdException(
-                            $this->trans('asam.fastOrder.errors.invalidProductNumber', ['%number%' => $itemData->get('number')])
-                        );
-                    }
+                    $product = $this->getProductFromItemData($itemData, $context);
 
                     $itemData->set('id', $product->getId());
                     $item = $this->lineItemFactoryRegistry->create(
@@ -240,6 +231,32 @@ class FastOrderController extends StorefrontController
         }
 
         return $this->json($response);
+    }
+
+    /**
+     * Get product entity from the form data.
+     *
+     * @param $itemData
+     * @param SalesChannelContext $context
+     * @return ProductEntity
+     * @throws InvalidProductIdException
+     */
+    protected function getProductFromItemData($itemData, SalesChannelContext $context): ProductEntity
+    {
+        /** @var ProductEntity $product */
+        $product = $this->productSearchRoute->load(
+            $this->getCriteria($itemData->get('number'), true, $context),
+            $context
+        )->getProducts()->first();
+
+        if (!$product) {
+            /* @todo: Handle validations in a dedicated validation factory. */
+            throw new InvalidProductIdException(
+                $this->trans('asam.fastOrder.errors.invalidProductNumber', ['%number%' => $itemData->get('number')])
+            );
+        }
+
+        return $product;
     }
 
     /**
